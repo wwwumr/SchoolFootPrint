@@ -6,7 +6,7 @@ import Header from '../layout/Header';
 import Sider from '../layout/Sider';
 import HomePage from './HomePage';
 import { UserProps, AppState } from '../redux/reducer/reducer';
-import { Role } from '../redux/action/ActionTypes';
+import { Role } from '../redux/action/action';
 import { connect } from 'react-redux';
 import Login from './common/Login';
 import Register from './common/Register';
@@ -42,7 +42,7 @@ const App: React.FunctionComponent<Props> = (props: Props) => {
 					<Layout.Header className='header'>
 						<Header />
 					</Layout.Header>
-					{user.userId !== -1 && user.role === Role.CERTIFICATION_BODY && (
+					{user.userId !== '' && user.role === Role.CERTIFICATION_BODY && (
 						<Layout>
 							<Layout.Sider width={200} className='site-layout-background'>
 								<Sider />
@@ -84,7 +84,7 @@ const App: React.FunctionComponent<Props> = (props: Props) => {
 							</Layout>
 						</Layout>
 					)}
-					{user.userId !== -1 && user.role === Role.CLUB && (
+					{user.userId !== '' && user.role === Role.CLUB && (
 						<Layout>
 							<Layout.Sider width={200} className='site-layout-background'>
 								<Sider />

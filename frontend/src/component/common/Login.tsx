@@ -1,18 +1,41 @@
 import React from 'react';
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button, Card, Select } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './login.module.css';
 import { useHistory } from 'react-router';
 import { store } from '../../redux/store/store';
-import { setUser } from '../../redux/action/action';
-import { Role } from '../../redux/action/ActionTypes';
+import Actions from '../../redux/action/action';
+import { Role } from '../../redux/action/action';
+import { LoginApi } from '../../apis/LoginApi';
+import { Store } from 'antd/lib/form/interface';
 
 const NormalLoginForm = () => {
 	const history = useHistory();
-	const onFinish = (values: any) => {
+	const [type, setType] = React.useState(0);
+
+	const onFinish = (values: Store) => {
 		console.log('Received values of form: ', values);
-		store.dispatch(setUser({ userId: 0, role: Role.CLUB}));
-		history.push('/');
+		if (type === 0) {
+			LoginApi(values.id, values.password).then((res) => {
+				if (res.data === true) {
+					store.dispatch(
+						Actions.setUser({ userId: values.id, role: Role.CLUB })
+					);
+					history.push('/');
+				} else {
+					alert('登录失败');
+				}
+			});
+		} else if (type === 1) {
+			if (values.id === 'admin' && values.password === 'admin') {
+				store.dispatch(
+					Actions.setUser({ userId: values.id, role: Role.CERTIFICATION_BODY })
+				);
+				history.push('/');
+			} else {
+				alert('登录失败');
+			}
+		}
 	};
 
 	return (
@@ -22,8 +45,19 @@ const NormalLoginForm = () => {
 			initialValues={{ remember: true }}
 			onFinish={onFinish}
 		>
+			<Form.Item>
+				<Select
+					value={type}
+					onChange={(e) => {
+						setType(e);
+					}}
+				>
+					<Select.Option value={0}>{'社团登录'}</Select.Option>
+					<Select.Option value={1}>{'认证机构登录'}</Select.Option>
+				</Select>
+			</Form.Item>
 			<Form.Item
-				name='username'
+				name='id'
 				rules={[{ required: true, message: '请输入用户名!' }]}
 			>
 				<Input

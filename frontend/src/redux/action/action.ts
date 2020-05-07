@@ -1,21 +1,53 @@
-import { ActionTypes } from './ActionTypes';
+import { ActivityTableProps } from './../../apis/ActivityApi';
 import { AnyAction } from 'redux';
 import { UserProps, intialStoreState } from '../reducer/reducer';
 
-export const setUser = (user: UserProps): AnyAction => {
-	return {
-		type: ActionTypes.SET_USER,
-		payload: {
-			user: user,
-		},
-	};
+export enum ActionTypes {
+	SET_USER = 'SET_USER',
+	LOGOUT = 'LOGOUT',
+	SET_ACTIVITY_ID = 'SET_ACTIVITY_ID',
+	SET_ACTIVITIES = 'SET_ACTIVITIES',
+}
+
+export enum Role {
+	CERTIFICATION_BODY,
+	CLUB,
+	UNDEFINED,
+}
+
+const Actions = {
+	setUser: (user: UserProps): AnyAction => {
+		return {
+			type: ActionTypes.SET_USER,
+			payload: {
+				user: user,
+			},
+		};
+	},
+	logOut: (): AnyAction => {
+		return {
+			type: ActionTypes.LOGOUT,
+			payload: {
+				state: intialStoreState,
+			},
+		};
+	},
+	setActivity: (activityId: string): AnyAction => {
+		return {
+			type: ActionTypes.SET_ACTIVITY_ID,
+			payload: {
+				activityId: activityId,
+			},
+		};
+	},
+	setActivities: (activities: ActivityTableProps): AnyAction => {
+		return {
+			type: ActionTypes.SET_ACTIVITIES,
+			payload: {
+				activities: activities,
+			},
+		};
+	},
 };
 
-export const logOut = () :AnyAction => {
-	return {
-		type: ActionTypes.LOGOUT,
-		payload: {
-			state: intialStoreState
-		}
-	}
-}
+export default Actions;

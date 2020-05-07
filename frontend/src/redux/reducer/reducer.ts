@@ -1,19 +1,40 @@
+import { ActivityTableProps } from './../../apis/ActivityApi';
 import { AnyAction } from 'redux';
-import { ActionTypes, Role } from './../action/ActionTypes';
+import { ActionTypes, Role } from './../action/action';
 
 export interface UserProps {
-	userId: number;
+	userId: string;
 	role: Role;
 }
 
 export interface AppState {
 	user: UserProps;
+	activityId: string;
+	activities: ActivityTableProps;
 }
 
 export const intialStoreState: AppState = {
 	user: {
-		userId: -1,
+		userId: '',
 		role: Role.UNDEFINED,
+	},
+	activityId: '',
+	activities: {
+		activitiesApproved: {
+			groupTableDetails: [],
+		},
+		activitiesCounted: {
+			groupTableDetails: [],
+		},
+		activitiesNotApproved: {
+			groupTableDetails: [],
+		},
+		activitiesNotCounted: {
+			groupTableDetails: [],
+		},
+		activitiesRecorded: {
+			groupTableDetails: [],
+		},
 	},
 };
 
@@ -30,6 +51,18 @@ export const AppReducer = (
 		}
 		case ActionTypes.LOGOUT: {
 			return { ...intialStoreState };
+		}
+		case ActionTypes.SET_ACTIVITY_ID: {
+			return {
+				...state,
+				activityId: action.paload.activityId,
+			};
+		}
+		case ActionTypes.SET_ACTIVITIES: {
+			return {
+				...state,
+				activities: action.paload.activities,
+			};
 		}
 		default:
 			return state;

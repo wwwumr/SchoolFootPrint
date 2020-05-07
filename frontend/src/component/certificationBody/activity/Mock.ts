@@ -17,7 +17,7 @@ export const Remaining: ActivityProps[] = [
 		location: '河北省沧州市',
 		type: '集会',
 		desc: '小小聚会',
-		status: '已计分',
+		status: '未审核',
 		img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
 	},
 	{

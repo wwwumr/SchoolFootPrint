@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Form, Input, Button } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { useHistory } from 'react-router-dom';
+import { RegisterApi } from '../../apis/LoginApi';
 
 const RegistrationForm = () => {
 	const history = useHistory();
@@ -9,7 +10,14 @@ const RegistrationForm = () => {
 
 	const onFinish = (values: Store) => {
 		console.log('Received values of form: ', values);
-		history.push('/login');
+		RegisterApi(values.id, values.password).then((res) => {
+			console.log(res);
+			if (res.data === true) {
+				history.push('/login');
+			} else {
+				alert('注册失败,用户名已被占用');
+			}
+		});
 	};
 
 	return (
@@ -21,13 +29,9 @@ const RegistrationForm = () => {
 			scrollToFirstError
 		>
 			<Form.Item
-				name='email'
-				label='邮箱'
+				name='id'
+				label='用户名'
 				rules={[
-					{
-						type: 'email',
-						message: '请输入正确格式的邮箱!',
-					},
 					{
 						required: true,
 						message: '请输入邮箱!',

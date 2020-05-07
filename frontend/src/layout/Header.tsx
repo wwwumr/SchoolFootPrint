@@ -1,12 +1,12 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { UserProps, AppState } from '../redux/reducer/reducer';
-import { Role } from '../redux/action/ActionTypes';
+import { Role } from '../redux/action/action';
 import { connect } from 'react-redux';
 import styles from './header.module.css';
 import { Link } from 'react-router-dom';
 import { store } from '../redux/store/store';
-import { logOut } from '../redux/action/action';
+import Actions from '../redux/action/action';
 
 interface StateProps {
 	user: UserProps;
@@ -21,7 +21,7 @@ type Props = StateProps;
 const Header: React.FunctionComponent<Props> = (props: Props) => {
 	const { user } = props;
 	const handleLogOut = () => {
-		store.dispatch(logOut());
+		store.dispatch(Actions.logOut());
 	};
 
 	return (

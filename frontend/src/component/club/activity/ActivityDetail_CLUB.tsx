@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button, Descriptions, Typography, Modal } from 'antd';
 import { Remaining, ActivityProps } from './Mock';
 import { Link } from 'react-router-dom';
+import { getRandomCode } from '../../../apis/ActivityApi';
 
 const gridStyle: React.CSSProperties = {
 	width: '50%',
@@ -36,6 +37,7 @@ const StatusAction = (props: StatusActionProps) => {
 
 const ActivityDeatil_CLUB = () => {
 	const [sign, setSign] = React.useState<boolean>(false);
+	const [randCode, setRandCode] = React.useState<string>('');
 
 	return (
 		<React.Fragment>
@@ -46,7 +48,10 @@ const ActivityDeatil_CLUB = () => {
 					<Button
 						disabled={MockActivity.status !== '未计分'}
 						onClick={() => {
-							setSign(true);
+							getRandomCode('1').then((res) => {
+								setRandCode(res.data);
+								setSign(true);
+							});
 						}}
 					>
 						{'一键生成签到码'}
@@ -80,34 +85,21 @@ const ActivityDeatil_CLUB = () => {
 						<Descriptions.Item label='活动描述'>
 							{MockActivity.desc}
 						</Descriptions.Item>
-						<Descriptions.Item label={'一键签到'}>
-							{
-								<React.Fragment>
-									<Button
-										onClick={() => {
-											setSign(true);
-										}}
-									>
-										{'一键生成签到码'}
-									</Button>
-									<Modal
-										title='签到码'
-										visible={sign}
-										onOk={() => {
-											setSign(false);
-										}}
-										onCancel={() => {
-											setSign(false);
-										}}
-										okText={'确认'}
-										cancelText={'取消'}
-									>
-										<Typography.Text>123456</Typography.Text>
-									</Modal>
-								</React.Fragment>
-							}
-						</Descriptions.Item>
 					</Descriptions>
+					<Modal
+						title='签到码'
+						visible={sign}
+						onOk={() => {
+							setSign(false);
+						}}
+						onCancel={() => {
+							setSign(false);
+						}}
+						okText={'确认'}
+						cancelText={'取消'}
+					>
+						<Typography.Text>{randCode}</Typography.Text>
+					</Modal>
 				</Card.Grid>
 			</Card>
 		</React.Fragment>

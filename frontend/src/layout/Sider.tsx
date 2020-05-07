@@ -4,7 +4,7 @@ import SubMenu from 'antd/lib/menu/SubMenu';
 import { NotificationOutlined } from '@ant-design/icons';
 import { AppState, UserProps } from '../redux/reducer/reducer';
 import { connect } from 'react-redux';
-import { Role } from '../redux/action/ActionTypes';
+import { Role } from '../redux/action/action';
 import { Link } from 'react-router-dom';
 
 interface StateProps {
