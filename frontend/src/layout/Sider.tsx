@@ -39,10 +39,10 @@ const Sider: React.FunctionComponent<Props> = (props: Props) => {
 						}
 					>
 						<Menu.Item key='0'>
-							<Link to='/activity/review'>待审核活动</Link>
+							<Link to='/activity/review'>待审核通过活动</Link>
 						</Menu.Item>
 						<Menu.Item key='1'>
-							<Link to='/activity/history'>已审核活动</Link>
+							<Link to='/activity/history'>待审核计分活动</Link>
 						</Menu.Item>
 					</SubMenu>
 				</Menu>

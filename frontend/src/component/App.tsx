@@ -69,7 +69,7 @@ const App: React.FunctionComponent<Props> = (props: Props) => {
 										/>
 										<Route
 											exact
-											path='/activity/marks/:id'
+											path='/activity/history/marks'
 											component={MarksReview_CERT}
 										/>
 										<Route
