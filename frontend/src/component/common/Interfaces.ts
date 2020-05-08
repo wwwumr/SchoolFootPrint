@@ -18,22 +18,22 @@ export enum ActivityType {
 export const getActivityChineseName = (type: ActivityType) => {
 	switch (type) {
 		case ActivityType.Sports: {
-			return '运动';
+			return '体育';
 		}
 		case ActivityType.Arts: {
 			return '艺术';
 		}
 		case ActivityType.Science: {
-			return '科学';
+			return '学术';
 		}
 		case ActivityType.Computer: {
-			return '计算机';
+			return '工程实践';
 		}
 		case ActivityType.Voluntary: {
 			return '志愿活动';
 		}
 		case ActivityType.Practice: {
-			return '实践';
+			return '社会实践';
 		}
 		default: {
 			return '';

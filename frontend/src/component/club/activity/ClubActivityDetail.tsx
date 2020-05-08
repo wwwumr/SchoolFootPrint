@@ -57,9 +57,11 @@ const ClubActivityDeatil = (props: Props) => {
 				actions={[
 					<StatusAction status={activity.status} id={activity.id} />,
 					<Button
-						disabled={activity.status !== '未计分'}
+						disabled={
+							activity.status !== '未计分' && activity.status !== '已通过'
+						}
 						onClick={() => {
-							getRandomCode('1').then((res) => {
+							getRandomCode(activity.id).then((res) => {
 								setRandCode(res.data);
 								setSign(true);
 							});

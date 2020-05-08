@@ -11,7 +11,7 @@ const initialValues: NewActivityProps = {
 	location: '活动地址',
 	name: '示例活动',
 	time: TimeUtils.getDate(new Date()),
-	type: '艺术',
+	type: '0',
 };
 
 const CreateActivity = () => {
@@ -59,7 +59,18 @@ const CreateActivity = () => {
 					rules={[{ required: true, message: '请选择活动类型' }]}
 				>
 					<Select>
-						<Select.Option value='demo'>Demo</Select.Option>
+						{['体育', '艺术', '学术', '工程实践', '志愿活动', '社会实践'].map(
+							(elem, index) => {
+								return (
+									<Select.Option
+										key={index.toString()}
+										value={index.toString()}
+									>
+										{elem}
+									</Select.Option>
+								);
+							}
+						)}
 					</Select>
 				</Form.Item>
 				<Form.Item

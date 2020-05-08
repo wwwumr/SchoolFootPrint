@@ -1,10 +1,8 @@
 import React from 'react';
 import { Table } from 'antd';
-import { MarksReviewProps, ActivityProps } from '../../../apis/ActivityApi';
+import { ActivityProps } from '../../../apis/ActivityApi';
 import { AppState } from '../../../redux/reducer/reducer';
 import { connect } from 'react-redux';
-
-type Item = MarksReviewProps;
 
 interface StateProps {
 	activity: ActivityProps;
@@ -34,12 +32,15 @@ const ClubMarksHistory = (props: StateProps) => {
 			width: '80%',
 		},
 	];
+	React.useEffect(() => {
+		console.log(activity);
+	}, [activity]);
 
 	return (
 		<React.Fragment>
 			<Table
 				bordered
-				rowKey='id'
+				rowKey='studentId'
 				dataSource={activity.reviews}
 				columns={columns}
 			/>

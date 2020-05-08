@@ -107,6 +107,7 @@ const ClubActivityReview = (props: Props) => {
 					</Button>
 					<Button
 						onClick={() => {
+							console.log(row)
 							setActivity(row);
 						}}
 						disabled={['未计分', '已计分', '已认证'].indexOf(row.status) < 0}

@@ -15,11 +15,10 @@ import ActivityReview_CERT from './certificationBody/activity/ActivityReview_CER
 import HistoryActivity_CERT from './certificationBody/activity/HistoryActivity_CERT';
 import ActivityDeatil_CERT from './certificationBody/activity/ActivityDetail_CERT';
 import MarksReview_CERT from './certificationBody/marks/MarksReview_CERT';
-import MarksReview_CLUB from './club/marks/ClubMarksReview';
 import ClubActivityDetail from './club/activity/ClubActivityDetail';
-import MarksHistory from './club/marks/MarksHistory';
 import CreateActivity from './club/activity/CreateActivity';
 import ClubActivities from './club/activity';
+import ClubActivitiyMarks from './club/marks/index'
 
 interface StateProps {
 	user: UserProps;
@@ -108,12 +107,7 @@ const App: React.FunctionComponent<Props> = (props: Props) => {
 										<Route
 											exact
 											path='/activity/marks'
-											component={MarksReview_CLUB}
-										/>
-										<Route
-											exact
-											path='/activity/marks/history'
-											component={MarksHistory}
+											component={ClubActivitiyMarks}
 										/>
 										<Route
 											exact
