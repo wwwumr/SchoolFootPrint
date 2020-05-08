@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import { UserProps, AppState } from '../redux/reducer/reducer';
 import { Role } from '../redux/action/action';
 import { connect } from 'react-redux';
-import styles from '../layout/Header.module.css';
+import styles from '../layout/header.module.css';
 import { Link } from 'react-router-dom';
 import { store } from '../redux/store/store';
 import Actions from '../redux/action/action';

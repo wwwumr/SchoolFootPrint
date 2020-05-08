@@ -3,21 +3,18 @@ import { persistReducer } from 'redux-persist';
 import { ActivityTableProps, ActivityProps } from './../../apis/ActivityApi';
 import { AnyAction, combineReducers } from 'redux';
 import { ActionTypes, Role } from './../action/action';
-import {OrgPassProps} from './../../apis/OrgApis'
+import { OrgPassProps } from './../../apis/OrgApis';
 export interface UserProps {
 	userId: string;
 	role: Role;
 }
 
 export interface AppState {
-	user: UserProps;
-	activityId: string;
-	activities: ActivityTableProps;
-	orgpass: OrgPassProps
-	apis:Boolean
 	PersistedReducer: {
 		user: UserProps;
 		activity: ActivityProps;
+		orgpass: OrgPassProps;
+		apis: Boolean;
 	};
 	TmpReducer: {
 		activities: ActivityTableProps;
@@ -43,6 +40,8 @@ export const intialStoreState: AppState = {
 			time: '',
 			type: '',
 		},
+		orgpass: { groupTableDetails: [] },
+		apis: false,
 	},
 	TmpReducer: {
 		activities: {
@@ -66,15 +65,13 @@ export const intialStoreState: AppState = {
 			},
 		},
 	},
-	orgpass:{
-		groupTableDetails:[]
-	},
-	apis:false
 };
 
 interface PersistedReducerProps {
 	user: UserProps;
 	activity: ActivityProps;
+	orgpass: OrgPassProps;
+	apis: Boolean;
 }
 
 const FirstReducer = (
@@ -97,6 +94,19 @@ const FirstReducer = (
 				activity: action.payload.activity,
 			};
 		}
+		case ActionTypes.ORG_GET_PASS: {
+			return {
+				...state,
+
+				orgpass: action.payload.orgpass,
+			};
+		}
+		case ActionTypes.ORG_APPROVE: {
+			return {
+				...state,
+				apis: action.payload.apis,
+			};
+		}
 		default:
 			return state;
 	}
@@ -117,18 +127,7 @@ const TmpReducer = (
 				activities: action.payload.activities,
 			};
 		}
-		case ActionTypes.ORG_GET_PASS: {
-			return {
-				...state,
-				orgpass: action.payload.orgpass,
-			};
-		}
-		case ActionTypes.ORG_APPROVE: {
-			return {
-				...state,
-				apis: action.payload.apis,
-			};
-		}
+
 		default:
 			return state;
 	}

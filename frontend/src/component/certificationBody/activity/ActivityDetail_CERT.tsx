@@ -1,31 +1,33 @@
 import React from 'react';
-import { Card, Button, Descriptions, Typography } from 'antd';
-import { Remaining } from './Mock';
-import { Link } from 'react-router-dom';
-import {ActivityProps} from '../../../apis/ActivityApi'
+import { Card, Descriptions } from 'antd';
+import { ActivityProps } from '../../../apis/ActivityApi';
 const gridStyle: React.CSSProperties = {
 	width: '50%',
 	textAlign: 'center',
 };
-interface ReviewActionProps {
-	status: string;
-}
 
 interface ActivityDetailProps {
-	details: ActivityProps
+	details: ActivityProps;
 }
-const ActivityDeatil = (props:ActivityDetailProps) => {
-	console.log(props)
-	const [MockActivity,setMockActivity] = React.useState(props.details)
+const ActivityDeatil = (props: ActivityDetailProps) => {
+	console.log(props);
+	const { details } = props;
+	const MockActivity = details;
+	//const [MockActivity, setMockActivity] = React.useState(props.details);
 	return (
 		<React.Fragment>
-			<Card
-				style={{ width: '80%', margin: '0 10%' }}
-			>
+			<Card style={{ width: '80%', margin: '0 10%' }}>
 				<Card.Grid hoverable={false} style={gridStyle}>
 					<Card
 						hoverable={false}
-						cover={<img alt='example' src={'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'} />}
+						cover={
+							<img
+								alt='example'
+								src={
+									'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
+								}
+							/>
+						}
 					></Card>
 				</Card.Grid>
 				<Card.Grid hoverable={false} style={gridStyle}>
