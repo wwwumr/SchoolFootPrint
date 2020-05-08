@@ -1,12 +1,14 @@
 import { ActivityTableProps, ActivityProps } from './../../apis/ActivityApi';
 import { AnyAction } from 'redux';
 import { UserProps, intialStoreState } from '../reducer/reducer';
-
+import {OrgPassProps} from './../../apis/OrgApis'
 export enum ActionTypes {
 	SET_USER = 'SET_USER',
 	LOGOUT = 'LOGOUT',
 	SET_ACTIVITY = 'SET_ACTIVITY',
 	SET_ACTIVITIES = 'SET_ACTIVITIES',
+	ORG_GET_PASS = 'ORG_GET_PASS',
+	ORG_APPROVE = 'ORG_APPROVE',
 }
 
 export enum Role {
@@ -45,6 +47,22 @@ const Actions = {
 			type: ActionTypes.SET_ACTIVITIES,
 			payload: {
 				activities: activities,
+			},
+		};
+	},
+	orgGetPass: (orgpass: OrgPassProps): AnyAction => {
+		return {
+			type: ActionTypes.ORG_GET_PASS,
+			payload: {
+			orgpass	: orgpass,
+			},
+		};
+	},
+	orgApprove: (apis: boolean): AnyAction => {
+		return {
+			type: ActionTypes.ORG_APPROVE,
+			payload: {
+			apis	: apis,
 			},
 		};
 	},
