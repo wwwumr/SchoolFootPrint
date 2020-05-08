@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Button } from 'antd';
-import { MarksReviewProps, MockMarks } from './Mock';
+import {
+	Table,
+	Input,
+	InputNumber,
+	Popconfirm,
+	Form,
+	Button,
+	message,
+} from 'antd';
+import { connect } from 'react-redux';
+import {
+	ActivityProps,
+	MarksReviewProps,
+	SubmitMarks,
+	SubmitReview,
+} from '../../../apis/ActivityApi';
+import { AppState } from '../../../redux/reducer/reducer';
+import { Store } from 'antd/lib/form/interface';
 
 type Item = MarksReviewProps;
-
-const originData: Item[] = MockMarks;
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
 	editing: boolean;
@@ -50,39 +64,45 @@ const EditableCell: React.FC<EditableCellProps> = ({
 	);
 };
 
-const MarksReview_CLUB = () => {
+interface StateProps {
+	activity: ActivityProps;
+}
+
+const mapStateToProps = (state: AppState) => ({
+	activity: state.PersistedReducer.activity,
+});
+
+const ClubMarksReview = (props: StateProps) => {
+	const { activity } = props;
+	const [data, setData] = React.useState<MarksReviewProps[]>([]);
 	const [form] = Form.useForm();
-	const [data, setData] = useState(originData);
-	const [count, setCount] = useState(originData.length);
-	const [editingKey, setEditingKey] = useState(-1);
+	const [editingKey, setEditingKey] = useState('');
 
-	const isEditing = (record: Item) => record.id === editingKey;
+	React.useEffect(() => {
+		const reviews: MarksReviewProps[] = [];
+		activity.studentIDs.forEach((elem) => {
+			reviews.push({ studentId: elem, score: 90, description: '' });
+			return;
+		});
+		setData(reviews);
+	}, [activity]);
 
-	const handleDelete = (id: number) => {
-		const dataSource = [...data];
-		setData(dataSource.filter((item) => item.id !== id));
-	};
-
-	const handleAdd = (newData: Item) => {
-		setData([...data, newData]);
-		setCount(count + 1);
-	};
+	const isEditing = (record: Item) => record.studentId === editingKey;
 
 	const edit = (record: Item) => {
 		form.setFieldsValue({ name: '', age: '', address: '', ...record });
-		setEditingKey(record.id);
+		setEditingKey(record.studentId);
 	};
 
 	const cancel = () => {
-		setEditingKey(-1);
+		setEditingKey('');
 	};
 
 	const save = async (key: React.Key) => {
 		try {
 			const row = (await form.validateFields()) as Item;
-
 			const newData = [...data];
-			const index = newData.findIndex((item) => key === item.id);
+			const index = newData.findIndex((item) => key === item.studentId);
 			if (index > -1) {
 				const item = newData[index];
 				newData.splice(index, 1, {
@@ -90,11 +110,11 @@ const MarksReview_CLUB = () => {
 					...row,
 				});
 				setData(newData);
-				setEditingKey(-1);
+				setEditingKey('');
 			} else {
 				newData.push(row);
 				setData(newData);
-				setEditingKey(-1);
+				setEditingKey('');
 			}
 		} catch (errInfo) {
 			console.log('Validate Failed:', errInfo);
@@ -104,18 +124,18 @@ const MarksReview_CLUB = () => {
 	const columns = [
 		{
 			title: '学生学号',
-			dataIndex: 'id',
+			dataIndex: 'studentId',
 			width: '10%',
 		},
 		{
 			title: '学生得分',
-			dataIndex: 'marks',
+			dataIndex: 'score',
 			width: '10%',
 			editable: true,
 		},
 		{
 			title: '评语',
-			dataIndex: 'desc',
+			dataIndex: 'description',
 			width: '60%',
 			editable: true,
 		},
@@ -126,7 +146,10 @@ const MarksReview_CLUB = () => {
 				const editable = isEditing(record);
 				return editable ? (
 					<span>
-						<Button onClick={() => save(record.id)} style={{ marginRight: 8 }}>
+						<Button
+							onClick={() => save(record.studentId)}
+							style={{ marginRight: 8 }}
+						>
 							保存
 						</Button>
 						<Popconfirm title='要取消修改吗?' onConfirm={cancel}>
@@ -136,12 +159,6 @@ const MarksReview_CLUB = () => {
 				) : (
 					<React.Fragment>
 						<Button onClick={() => edit(record)}>修改</Button>
-						<Popconfirm
-							title='确认删除?'
-							onConfirm={() => handleDelete(record.id)}
-						>
-							<Button>删除</Button>
-						</Popconfirm>
 					</React.Fragment>
 				);
 			},
@@ -156,7 +173,7 @@ const MarksReview_CLUB = () => {
 			...col,
 			onCell: (record: Item) => ({
 				record,
-				inputType: col.dataIndex === 'marks' ? 'number' : 'text',
+				inputType: col.dataIndex === 'score' ? 'number' : 'text',
 				dataIndex: col.dataIndex,
 				title: col.title,
 				editing: isEditing(record),
@@ -164,18 +181,13 @@ const MarksReview_CLUB = () => {
 		};
 	});
 
+	const onFinish = (values: Store) => {
+		console.log(values);
+	};
+
 	return (
 		<React.Fragment>
-			<Button
-				onClick={() => {
-					handleAdd({ ...originData[0], id: count });
-				}}
-				type='primary'
-				style={{ marginBottom: 16 }}
-			>
-				{'添加学生'}
-			</Button>
-			<Form form={form} component={false}>
+			<Form form={form} onFinish={onFinish}>
 				<Table
 					components={{
 						body: {
@@ -183,7 +195,7 @@ const MarksReview_CLUB = () => {
 						},
 					}}
 					bordered
-					rowKey='id'
+					rowKey='studentId'
 					dataSource={data}
 					columns={mergedColumns}
 					rowClassName='editable-row'
@@ -191,9 +203,37 @@ const MarksReview_CLUB = () => {
 						onChange: cancel,
 					}}
 				/>
+				<Button
+					type={'primary'}
+					onClick={() => {
+						SubmitReview(activity.id, data)
+							.then(() => {
+								message.success('提交成功');
+							})
+							.catch(() => {
+								message.error('提交失败');
+							});
+					}}
+				>
+					{'批量提交'}
+				</Button>
+				<Button
+					type={'primary'}
+					onClick={() => {
+						SubmitMarks(activity.id)
+							.then(() => {
+								message.success('提交成功');
+							})
+							.catch(() => {
+								message.error('提交失败');
+							});
+					}}
+				>
+					{'提交认证机构计分'}
+				</Button>
 			</Form>
 		</React.Fragment>
 	);
 };
 
-export default MarksReview_CLUB;
+export default connect(mapStateToProps)(ClubMarksReview);

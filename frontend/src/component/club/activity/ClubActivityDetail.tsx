@@ -1,19 +1,28 @@
 import React from 'react';
 import { Card, Button, Descriptions, Typography, Modal } from 'antd';
-import { Remaining, ActivityProps } from './Mock';
 import { Link } from 'react-router-dom';
-import { getRandomCode } from '../../../apis/ActivityApi';
+import { getRandomCode, ActivityProps } from '../../../apis/ActivityApi';
+import { AppState } from '../../../redux/reducer/reducer';
+import { connect } from 'react-redux';
 
 const gridStyle: React.CSSProperties = {
 	width: '50%',
 	textAlign: 'center',
 };
 
-const MockActivity: ActivityProps = Remaining[0];
+interface StateProps {
+	activity: ActivityProps;
+}
+
+const mapStateToProps = (state: AppState) => ({
+	activity: state.PersistedReducer.activity,
+});
+
+type Props = StateProps;
 
 interface StatusActionProps {
 	status: string;
-	id: number;
+	id: string;
 }
 
 const StatusAction = (props: StatusActionProps) => {
@@ -28,14 +37,16 @@ const StatusAction = (props: StatusActionProps) => {
 			)}
 			{status === '未计分' && (
 				<Button>
-					<Link to={`/activity/marks/${id}`}>登记分数</Link>
+					<Link to={`/activity/marks`}>登记分数</Link>
 				</Button>
 			)}
 		</React.Fragment>
 	);
 };
 
-const ActivityDeatil_CLUB = () => {
+const ClubActivityDeatil = (props: Props) => {
+	const { activity } = props;
+
 	const [sign, setSign] = React.useState<boolean>(false);
 	const [randCode, setRandCode] = React.useState<string>('');
 
@@ -44,9 +55,9 @@ const ActivityDeatil_CLUB = () => {
 			<Card
 				style={{ width: '80%', margin: '0 10%' }}
 				actions={[
-					<StatusAction status={MockActivity.status} id={MockActivity.id} />,
+					<StatusAction status={activity.status} id={activity.id} />,
 					<Button
-						disabled={MockActivity.status !== '未计分'}
+						disabled={activity.status !== '未计分'}
 						onClick={() => {
 							getRandomCode('1').then((res) => {
 								setRandCode(res.data);
@@ -61,7 +72,14 @@ const ActivityDeatil_CLUB = () => {
 				<Card.Grid hoverable={false} style={gridStyle}>
 					<Card
 						hoverable={false}
-						cover={<img alt='example' src={MockActivity.img} />}
+						cover={
+							<img
+								alt='example'
+								src={
+									'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
+								}
+							/>
+						}
 					></Card>
 				</Card.Grid>
 				<Card.Grid hoverable={false} style={gridStyle}>
@@ -71,19 +89,25 @@ const ActivityDeatil_CLUB = () => {
 						style={{ textAlign: 'left' }}
 					>
 						<Descriptions.Item label='活动编号'>
-							{MockActivity.id}
+							{activity.id}
+						</Descriptions.Item>
+						<Descriptions.Item label='活动名称'>
+							{activity.name}
 						</Descriptions.Item>
 						<Descriptions.Item label='活动时间'>
-							{MockActivity.time}
+							{activity.time}
 						</Descriptions.Item>
 						<Descriptions.Item label='活动地点'>
-							{MockActivity.location}
+							{activity.location}
 						</Descriptions.Item>
 						<Descriptions.Item label='活动类型'>
-							{MockActivity.type}
+							{activity.type}
 						</Descriptions.Item>
 						<Descriptions.Item label='活动描述'>
-							{MockActivity.desc}
+							{activity.description}
+						</Descriptions.Item>
+						<Descriptions.Item label='活动基准分'>
+							{activity.basicScore}
 						</Descriptions.Item>
 					</Descriptions>
 					<Modal
@@ -106,4 +130,4 @@ const ActivityDeatil_CLUB = () => {
 	);
 };
 
-export default ActivityDeatil_CLUB;
+export default connect(mapStateToProps)(ClubActivityDeatil);

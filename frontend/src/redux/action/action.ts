@@ -1,11 +1,11 @@
-import { ActivityTableProps } from './../../apis/ActivityApi';
+import { ActivityTableProps, ActivityProps } from './../../apis/ActivityApi';
 import { AnyAction } from 'redux';
 import { UserProps, intialStoreState } from '../reducer/reducer';
 
 export enum ActionTypes {
 	SET_USER = 'SET_USER',
 	LOGOUT = 'LOGOUT',
-	SET_ACTIVITY_ID = 'SET_ACTIVITY_ID',
+	SET_ACTIVITY = 'SET_ACTIVITY',
 	SET_ACTIVITIES = 'SET_ACTIVITIES',
 }
 
@@ -32,11 +32,11 @@ const Actions = {
 			},
 		};
 	},
-	setActivity: (activityId: string): AnyAction => {
+	setActivity: (activity: ActivityProps): AnyAction => {
 		return {
-			type: ActionTypes.SET_ACTIVITY_ID,
+			type: ActionTypes.SET_ACTIVITY,
 			payload: {
-				activityId: activityId,
+				activity: activity,
 			},
 		};
 	},

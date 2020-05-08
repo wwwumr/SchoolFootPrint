@@ -12,7 +12,7 @@ interface StateProps {
 }
 
 const mapStateToProps = (state: AppState) => ({
-	user: state.user,
+	user: state.PersistedReducer.user,
 });
 
 type Props = StateProps;
@@ -66,10 +66,7 @@ const Sider: React.FunctionComponent<Props> = (props: Props) => {
 							<Link to='/activity/create'>新建活动</Link>
 						</Menu.Item>
 						<Menu.Item key='1'>
-							<Link to='/activity/review'>进行中活动</Link>
-						</Menu.Item>
-						<Menu.Item key='2'>
-							<Link to='/activity/history'>已结束活动</Link>
+							<Link to='/activity'>活动管理</Link>
 						</Menu.Item>
 					</SubMenu>
 				</Menu>

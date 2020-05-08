@@ -1,4 +1,4 @@
-type ActivityStatusType = '未审核' | '未通过' |'未进行' | '进行中' | '未计分' | '已计分';
+type ActivityStatusType = '未审核' | '未通过' | '已通过' | '未计分' | '已计分' | '已认证';
 
 export interface ActivityProps {
 	id: number;

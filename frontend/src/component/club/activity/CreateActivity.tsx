@@ -3,13 +3,14 @@ import { Form, Input, Select, DatePicker, InputNumber, Button } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { NewActivityProps, CreateActivityApi } from '../../../apis/ActivityApi';
 import { store } from '../../../redux/store/store';
+import TimeUtils from '../../../utils/TimeUtils';
 
 const initialValues: NewActivityProps = {
 	basicScore: 0,
 	description: '简介',
 	location: '活动地址',
 	name: '示例活动',
-	time: new Date(),
+	time: TimeUtils.getDate(new Date()),
 	type: '艺术',
 };
 
@@ -25,12 +26,12 @@ const CreateActivity = () => {
 		}
 
 		console.log(values);
-		CreateActivityApi(store.getState().user.userId, {
+		CreateActivityApi(store.getState().PersistedReducer.user.userId, {
 			basicScore: values.basicScore,
 			description: values.description,
 			location: values.location,
 			name: values.name,
-			time: values.time,
+			time: TimeUtils.getDate(values.time),
 			type: values.type,
 		});
 	};

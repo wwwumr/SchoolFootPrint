@@ -15,22 +15,21 @@ import ActivityReview_CERT from './certificationBody/activity/ActivityReview_CER
 import HistoryActivity_CERT from './certificationBody/activity/HistoryActivity_CERT';
 import ActivityDeatil_CERT from './certificationBody/activity/ActivityDetail_CERT';
 import MarksReview_CERT from './certificationBody/marks/MarksReview_CERT';
-import HistoryActivity_CLUB from './club/activity/HistoryActivity_CLUB';
-import ActivityReview_CLUB from './club/activity/ActivityReview_CLUB';
-import MarksReview_CLUB from './club/marks/MarksReview_CLUB';
-import ActivityDeatil_CLUB from './club/activity/ActivityDetail_CLUB';
+import MarksReview_CLUB from './club/marks/ClubMarksReview';
+import ClubActivityDetail from './club/activity/ClubActivityDetail';
 import MarksHistory from './club/marks/MarksHistory';
 import CreateActivity from './club/activity/CreateActivity';
+import ClubActivities from './club/activity';
 
 interface StateProps {
 	user: UserProps;
 }
 
 const mapStateToProps = (state: AppState) => ({
-	user: state.user,
+	user: state.PersistedReducer.user,
 });
 
-type Props = StateProps;
+type Props = StateProps
 
 const App: React.FunctionComponent<Props> = (props: Props) => {
 	const { user } = props;
@@ -105,30 +104,21 @@ const App: React.FunctionComponent<Props> = (props: Props) => {
 											path='/activity/create'
 											component={CreateActivity}
 										/>
+										<Route exact path='/activity' component={ClubActivities} />
 										<Route
 											exact
-											path='/activity/review'
-											component={ActivityReview_CLUB}
-										/>
-										<Route
-											exact
-											path='/activity/history'
-											component={HistoryActivity_CLUB}
-										/>
-										<Route
-											exact
-											path='/activity/marks/:id'
+											path='/activity/marks'
 											component={MarksReview_CLUB}
 										/>
 										<Route
 											exact
-											path='/activity/marks/history/:id'
+											path='/activity/marks/history'
 											component={MarksHistory}
 										/>
 										<Route
 											exact
-											path='/activity/detail/:id'
-											component={ActivityDeatil_CLUB}
+											path='/activity/detail'
+											component={ClubActivityDetail}
 										/>
 										<Route path='*' component={NotFound} />
 									</Switch>

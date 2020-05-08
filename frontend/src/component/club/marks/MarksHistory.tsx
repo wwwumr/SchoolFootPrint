@@ -1,61 +1,50 @@
-import React, { useState } from 'react';
-import { Table, Form } from 'antd';
-import { MarksReviewProps, MockMarks } from './Mock';
+import React from 'react';
+import { Table } from 'antd';
+import { MarksReviewProps, ActivityProps } from '../../../apis/ActivityApi';
+import { AppState } from '../../../redux/reducer/reducer';
+import { connect } from 'react-redux';
 
 type Item = MarksReviewProps;
 
-const originData: Item[] = MockMarks;
+interface StateProps {
+	activity: ActivityProps;
+}
 
-const MarksHistory = () => {
-	const [form] = Form.useForm();
-	const [data, setData] = useState<Item[]>([]);
+const mapStateToProps = (state: AppState) => ({
+	activity: state.PersistedReducer.activity,
+});
 
-	React.useEffect(() => {
-		setData(originData);
-	}, []);
+const ClubMarksHistory = (props: StateProps) => {
+	const { activity } = props;
 
 	const columns = [
 		{
 			title: '学生学号',
-			dataIndex: 'id',
+			dataIndex: 'studentId',
 			width: '10%',
 		},
 		{
 			title: '学生得分',
-			dataIndex: 'marks',
+			dataIndex: 'score',
 			width: '10%',
-			editable: true,
 		},
 		{
 			title: '评语',
-			dataIndex: 'desc',
+			dataIndex: 'description',
 			width: '80%',
-			editable: true,
 		},
 	];
 
-	const mergedColumns = columns.map((col) => {
-		if (!col.editable) {
-			return col;
-		}
-		return {
-			...col,
-			onCell: (record: Item) => ({
-				record,
-				inputType: col.dataIndex === 'marks' ? 'number' : 'text',
-				dataIndex: col.dataIndex,
-				title: col.title,
-			}),
-		};
-	});
-
 	return (
 		<React.Fragment>
-			<Form form={form} component={false}>
-				<Table bordered rowKey='id' dataSource={data} columns={mergedColumns} />
-			</Form>
+			<Table
+				bordered
+				rowKey='id'
+				dataSource={activity.reviews}
+				columns={columns}
+			/>
 		</React.Fragment>
 	);
 };
 
-export default MarksHistory;
+export default connect(mapStateToProps)(ClubMarksHistory);

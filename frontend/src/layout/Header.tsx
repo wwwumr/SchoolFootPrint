@@ -13,7 +13,7 @@ interface StateProps {
 }
 
 const mapStateToProps = (state: AppState) => ({
-	user: state.user,
+	user: state.PersistedReducer.user,
 });
 
 type Props = StateProps;

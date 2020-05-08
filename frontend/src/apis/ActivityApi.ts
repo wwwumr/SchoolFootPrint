@@ -1,14 +1,12 @@
 import { BaseRoot } from './BaseRoot';
 import axios from 'axios';
-import { store } from '../redux/store/store';
-import Actions from '../redux/action/action';
 
 export interface NewActivityProps {
 	basicScore: number;
 	description: string;
 	location: string;
 	name: string;
-	time: Date;
+	time: string;
 	type: string;
 }
 
@@ -21,6 +19,12 @@ export interface ActivityReviewProps {
 	score: number;
 	studentId: string;
 	type: string;
+}
+
+export interface MarksReviewProps {
+	description: string;
+	score: number;
+	studentId: string;
 }
 
 export interface ActivityProps {
@@ -38,6 +42,9 @@ export interface ActivityProps {
 }
 
 export interface ActivityTableProps {
+	activitiesToReview: {
+		groupTableDetails: ActivityProps[];
+	};
 	activitiesApproved: {
 		groupTableDetails: ActivityProps[];
 	};
@@ -56,13 +63,36 @@ export interface ActivityTableProps {
 }
 
 export const GetActivities = (clubId: string) => {
-  axios.get(`${BaseRoot}/group/getTable/id/${clubId}`)
-  .then((res)=> {
-    const data = res.data as ActivityTableProps
-    store.dispatch(Actions.setActivities(data))
-  })
+	return axios.get(`${BaseRoot}/group/getTable/id/${clubId}`);
 };
 
 export const getRandomCode = (activityId: string) => {
 	return axios.get(`${BaseRoot}/group/getCode/id/${activityId}`);
+};
+
+interface ReviewProps {
+	activityID: string;
+	description: string;
+	score: number;
+	studentId: string;
+}
+
+export const SubmitReview = (
+	activityId: string,
+	reviews: MarksReviewProps[]
+) => {
+	const reviewsDto: ReviewProps[] = [];
+	reviews.forEach((element) => {
+		reviewsDto.push({
+			...element,
+			activityID: activityId,
+		});
+	});
+	return axios.post(`${BaseRoot}/group/writeReview`, reviewsDto);
+};
+
+export const SubmitMarks = (activityId: string) => {
+	return axios.post(
+		`${BaseRoot}/group/submitAllReview/activityId/${activityId}`
+	);
 };
